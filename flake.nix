@@ -8,5 +8,8 @@
     in
     {
       formatter."${system}" = pkgs.nixfmt-rfc-style;
+      devShells."${system}".default = pkgs.mkShellNoCC {
+        name = "shell-for-working-on-My-First-Quake-Mod";
+      };
     };
 }
