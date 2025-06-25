@@ -1,0 +1,11 @@
+# This pyproject.toml file only exists so that we can pin the version of SCons
+# that we’re using.
+[project]
+name = "my-first-quake-mod-uv-environment"
+# I don’t actually want this project to have a version number, but the
+# pyproject.toml specification says that we need to have a version number. See
+# <https://packaging.python.org/en/latest/specifications/pyproject-toml/#declaring-project-metadata-the-project-table>.
+version = "0.dev0"
+dependencies = [ "SCons" ]
+# This prevents uv from giving me a warning.
+requires-python = ">=3.12"

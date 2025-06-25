@@ -1,0 +1,27 @@
+import os
+import pathlib
+
+
+quake_map_builder = Builder(
+    action=[
+        ["qbsp", "$SOURCE", "$TARGET"],
+        ["vis", "$TARGET"],
+	["light", "$TARGET"],
+    ],
+    suffix=".bsp",
+)
+
+
+environment = Environment(
+    BUILDERS={"QuakeMapBuilder": quake_map_builder},
+    # This makes sure that this SCons file has access to commands on the user’s
+    # PATH. See
+    # <https://scons.org/doc/production/HTML/scons-user/ch07s03.html>.
+    ENV={"PATH": os.environ["PATH"]}
+)
+map_targets = []
+source_map_dir = pathlib.Path("..", "..", "src", "maps")
+for source_map_path in source_map_dir.glob("*.map"):
+    source_map_path_fixed = pathlib.Path("maps", source_map_path.name)
+    map_targets.append(environment.QuakeMapBuilder(source_map_path_fixed))
+Return("map_targets")
