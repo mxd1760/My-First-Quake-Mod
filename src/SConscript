@@ -2,9 +2,13 @@ import os
 import pathlib
 
 
+# The current working directory will be different at different times. We’re
+# turning it into an absolute path now so that we don’t have to worry about
+# what the current working directory will be in the future.
+source_map_dir = pathlib.Path("..", "..", "src", "maps").absolute()
 quake_map_builder = Builder(
     action=[
-        ["qbsp", "$SOURCE", "$TARGET"],
+        ["qbsp", "-wadpath", source_map_dir, "$SOURCE", "$TARGET"],
         ["vis", "$TARGET"],
 	["light", "$TARGET"],
     ],
@@ -20,7 +24,6 @@ environment = Environment(
     ENV={"PATH": os.environ["PATH"]}
 )
 map_targets = []
-source_map_dir = pathlib.Path("..", "..", "src", "maps")
 for source_map_path in source_map_dir.glob("*.map"):
     source_map_path_fixed = pathlib.Path("maps", source_map_path.name)
     map_targets.append(environment.QuakeMapBuilder(source_map_path_fixed))
